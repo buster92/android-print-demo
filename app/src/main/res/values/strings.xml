@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Print Demo App</string>
+    <string name="print_input_placeholder">Your text to print here</string>
+    <string name="print_text">Print text</string>
+</resources>
