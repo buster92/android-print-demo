@@ -9,7 +9,6 @@ import android.print.PageRange
 import android.print.PrintAttributes
 import android.print.PrintDocumentAdapter
 import android.print.PrintDocumentInfo
-import android.print.PrintJob
 import android.print.PrintManager
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,16 +16,31 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import java.io.FileOutputStream
 
-class SignUpViewModel() : ViewModel() {
+class PrintViewModel() : ViewModel() {
 
+    /**
+     * Text entered by the user
+     */
     var printString by mutableStateOf("")
         private set
 
+    /**
+     * Saves the input text so it can be used later to print it
+     *
+     * @param input current print text
+     */
     fun updatePrintString(input: String) {
         printString = input
     }
 
 
+    /**
+     * Converts the given content text into a PDF file and send it to print
+     *
+     * @param context app context
+     * @param content text to be printed
+     * @param jobName print job name
+     */
     fun printStringToPrinter(context: Context, content: String, jobName: String) {
         // Create a PDF document
         val pdfDocument = PdfDocument()
@@ -38,7 +52,6 @@ class SignUpViewModel() : ViewModel() {
         canvas.drawText(content, 50f, 50f, paint)
         pdfDocument.finishPage(page)
 
-        // Get the print manager service
         val printManager = context.getSystemService(Context.PRINT_SERVICE) as PrintManager
 
         // Create a print document adapter
@@ -73,8 +86,7 @@ class SignUpViewModel() : ViewModel() {
             }
         }
 
-        // Start the print job
-        val printJob: PrintJob = printManager.print(jobName, printAdapter, null)
+        printManager.print(jobName, printAdapter, null)
     }
 
 }
